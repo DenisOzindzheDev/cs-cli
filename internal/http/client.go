@@ -18,13 +18,11 @@ type Auth struct {
 func login(roleid, secretid, vaultnamespace string) string {
 	url := "https://vault.int.rolfcorp.ru/v1/auth/approle/login"
 	method := "POST"
-	fmt.Printf("Calling login with %s %s", roleid, secretid)
 	payload := strings.NewReader(fmt.Sprintf(`{
    "role_id":  "%s",
    "secret_id": "%s"
 }`, roleid, secretid))
 
-	fmt.Println(payload)
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, payload)
 
@@ -55,14 +53,13 @@ func login(roleid, secretid, vaultnamespace string) string {
 		fmt.Println(err)
 	}
 	token := reqBody.Object.Token
-	// fmt.Printf("\n\n\n\n\n %s\n\n\n\n\n\n\n", string(token))
 
 	return token
 }
 
 func ExtractData(role, secret, path, vaultnamespace string) {
 	token := login(role, secret, vaultnamespace)
-	// fmt.Printf("\n\n\n\n\n%s\n\n\n\n", token)
+
 	url := fmt.Sprintf("https://vault.int.rolfcorp.ru/v1/%s", path)
 	method := "GET"
 	client := &http.Client{}
@@ -85,8 +82,20 @@ func ExtractData(role, secret, path, vaultnamespace string) {
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-
+		fmt.Println("Error reading body: ", err)
 	}
-	fmt.Println(string(body))
+
+	var jsonResponse map[string]interface{}
+	err = json.Unmarshal(body, &jsonResponse)
+	if err != nil {
+		panic(err)
+	}
+
+	jsonOutput, err := json.MarshalIndent(jsonResponse, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(jsonOutput))
 
 }
