@@ -39,4 +39,4 @@ jobs:
           brew bottle --merge --write --no-commit ./Formula/cobra-cli.rb
           git -C $(brew --repo homebrew/core) checkout master
           git -C $(brew --repo homebrew/core) pull
-          brew bump-formula-pr --no-browse --no-fork --commit-url=https://github.com/DenisOzindzheDev/cs-cli/releases/tag/v0.0.1 --strict cs-cli
+          brew bump-formula-pr --no-browse --no-fork --commit-url=https://github.com/DenisOzindzheDev/cs-cli/releases/tag/v0.0.2 --strict cs-cli
