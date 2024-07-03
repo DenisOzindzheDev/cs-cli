@@ -1,4 +1,4 @@
-package http
+package rest
 
 import (
 	"encoding/json"
@@ -6,14 +6,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-)
 
-type Nested struct {
-	Token string `json:"client_token"`
-}
-type Auth struct {
-	Object Nested `json:"auth"`
-}
+	"github.com/DenisOzindzheDev/cs-cli/internal/models"
+)
 
 func login(roleid, secretid, vaultnamespace string) string {
 	url := "https://vault.int.rolfcorp.ru/v1/auth/approle/login"
@@ -47,7 +42,7 @@ func login(roleid, secretid, vaultnamespace string) string {
 
 	}
 
-	var reqBody Auth
+	var reqBody models.Auth
 	err = json.Unmarshal(body, &reqBody)
 	if err != nil {
 		fmt.Println(err)
@@ -59,6 +54,10 @@ func login(roleid, secretid, vaultnamespace string) string {
 
 func ExtractData(role, secret, path, vaultnamespace string) {
 	token := login(role, secret, vaultnamespace)
+	if token == "" {
+		fmt.Println("No token found in login request")
+		return
+	}
 
 	url := fmt.Sprintf("https://vault.int.rolfcorp.ru/v1/%s", path)
 	method := "GET"

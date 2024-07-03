@@ -15,7 +15,7 @@ import (
 func CreateClients() (map[string]kubernetes.Interface, error) {
 	kubeconfigPath := os.Getenv("KUBECONFIG")
 	if kubeconfigPath == "" {
-		fmt.Printf("Warning: KUBECONFIG is not set in the environment using the default configuration\n")
+		fmt.Printf("Warning: variable KUBECONFIG is not set in the environment!\nUsing the default configuration\n")
 		if home := homedir.HomeDir(); home != "" {
 			kubeconfigPath = filepath.Join(home, ".kube", "config")
 			fmt.Printf("using %s\n", kubeconfigPath)
@@ -46,7 +46,7 @@ func CreateClients() (map[string]kubernetes.Interface, error) {
 
 		client, err := kubernetes.NewForConfig(config)
 		if err != nil {
-			fmt.Printf("Error: cannot create client for context %s : %v", contextName, err)
+			fmt.Printf("Error: cannot create client for context %s : %v\n", contextName, err)
 			continue
 		}
 		clients[contextName] = client

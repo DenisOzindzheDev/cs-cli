@@ -4,8 +4,8 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/DenisOzindzheDev/cs-cli/internal/http"
 	"github.com/DenisOzindzheDev/cs-cli/internal/kube"
+	"github.com/DenisOzindzheDev/cs-cli/internal/rest"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,7 @@ var vaultCmd = &cobra.Command{
 	Long:  `Allows to extract data from vault`,
 	Run: func(cmd *cobra.Command, args []string) {
 		vault := kube.GetSecrets(channelNamespace)
-		http.ExtractData(vault.HC_VAULT_ROLE_ID, vault.HC_VAULT_SECRET_ID, dataPath, vaultNamespace)
+		rest.ExtractData(vault.HC_VAULT_ROLE_ID, vault.HC_VAULT_SECRET_ID, dataPath, vaultNamespace)
 	},
 }
 

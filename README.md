@@ -34,5 +34,5 @@ Flags:
 1. Exec KUBECONFIG from $KUBECONFIG environment variable [ * ]
 2. Move vault host to config
 3. Move vault secret name to config
-4. Handle connection to clusters and don't crash while it not works
+4. Handle connection to clusters and don't crash while it not works [ * ]
 5. Pretify and refactor code
